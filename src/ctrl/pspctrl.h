@@ -500,14 +500,14 @@ typedef struct SceCtrlData2 {
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char	unused1;
+			unsigned char	unused3;
 			/** Current pressure applied to the down Directional Pad button. */
 			unsigned char 	DPadSensDown;
 			/**
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char 	unused2;
+			unsigned char 	unused4;
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 		};
 
@@ -528,14 +528,14 @@ typedef struct SceCtrlData2 {
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char	unused1;
+			unsigned char	unused5;
 			/** Current pressure applied to the Circle Face button. */
 			unsigned char 	FaceSensCircle;
 			/**
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char 	unused2;
+			unsigned char 	unused6;
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 		};
 
@@ -556,14 +556,14 @@ typedef struct SceCtrlData2 {
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char	unused1;
+			unsigned char	unused7;
 			/** Current pressure applied to the Square Face button. */
 			unsigned char 	FaceSensSquare;
 			/**
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char 	unused2;
+			unsigned char 	unused8;
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 		};
 
@@ -584,14 +584,14 @@ typedef struct SceCtrlData2 {
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char	unused1;
+			unsigned char	unused9;
 			/** Current pressure applied to the R1 Bumper. */
 			unsigned char 	BumperSensR1;
 			/**
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char 	unused2;
+			unsigned char 	unused10;
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 		};
 
@@ -612,14 +612,14 @@ typedef struct SceCtrlData2 {
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char	unused1;
+			unsigned char	unused11;
 			/** Current pressure applied to the L2 Trigger. */
 			unsigned char 	TriggerSensR2;
 			/**
 			 * @private
 			 * Unused, for byte indexing u32.
 			 */
-			unsigned char 	unused2;
+			unsigned char 	unused12;
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 		};
 
