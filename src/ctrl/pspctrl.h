@@ -634,7 +634,7 @@ typedef struct {
  * 
  * @return 0 on success.
  */
-s32 sceCtrl_driver_E467BEC8(unsigned char externalPort, SceCtrlInputDataTransferHandler *transferHandler, void *inputSource);
+unsigned int sceCtrl_driver_E467BEC8(unsigned char externalPort, SceCtrlInputDataTransferHandler *transferHandler, void *inputSource);
 
 /**
  * @brief Read latest controller data from the controller service.
