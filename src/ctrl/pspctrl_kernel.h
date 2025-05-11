@@ -18,6 +18,8 @@
 extern "C" {
 #endif
 
+#include <pspctrl.h>
+
 /**
  * Set the controller button masks
  *
@@ -56,10 +58,27 @@ int sceCtrl_driver_5E77BC8A(unsigned int mask);
  */
 int sceCtrl_driver_5C56C779(int no, unsigned int mask, void (*cb)(int, int, void*), void *arg);
 
+/**
+ * Sets up internal controller buffers to receive external input data. Each input mode has its own
+ * set of buffers. These buffers are of type ::SceCtrlData2. 
+ * Note: This function has to be called initially in order to obtain external input data via the corresponding 
+ * Peek/Read functions.
+ * 
+ * @param externalPort Pass a valid element of ::PspCtrlPort (either 1 or 2).
+ * @param transferHandler Pointer to a SceCtrlInputDataTransferHandler containing a function to copy the @p inputSource
+ *						into the PSP's controller buffers.
+ * @param inputSource Pointer to buffer containing the Controller input data to copy to the PSP's 
+ *					  controller buffers. It is passed as the source argument to the given transfer function.
+ * 
+ * @return 0 on success.
+ */
+unsigned int sceCtrl_driver_E467BEC8(unsigned char externalPort, SceCtrlInputDataTransferHandler *transferHandler, void *inputSource);
+
 /* Just define some random names for the functions to make them easier to use */
 #define sceCtrlSetButtonMasks sceCtrl_driver_7CA723DC
 #define sceCtrlGetButtonMask sceCtrl_driver_5E77BC8A
 #define sceCtrlRegisterButtonCallback sceCtrl_driver_5C56C779
+#define sceCtrlSetUpExtendedFeatures sceCtrl_driver_E467BEC8
 
 
 #ifdef __cplusplus
