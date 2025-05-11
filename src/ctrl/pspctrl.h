@@ -242,22 +242,6 @@ int sceCtrlSetSamplingMode(int mode);
 int sceCtrlGetSamplingMode(int *pmode);
 
 /**
- * Sets up internal controller buffers to receive external input data. Each input mode has its own
- * set of buffers. These buffers are of type ::SceCtrlData2. 
- * Note: This function has to be called initially in order to obtain external input data via the corresponding 
- * Peek/Read functions.
- * 
- * @param externalPort Pass a valid element of ::PspCtrlPort (either 1 or 2).
- * @param transferHandler Pointer to a SceCtrlInputDataTransferHandler containing a function to copy the @p inputSource
- *						into the PSP's controller buffers.
- * @param inputSource Pointer to buffer containing the Controller input data to copy to the PSP's 
- *					  controller buffers. It is passed as the source argument to the given transfer function.
- * 
- * @return 0 on success.
- */
-s32 sceCtrl_driver_E467BEC8(unsigned char externalPort, SceCtrlInputDataTransferHandler *transferHandler, void *inputSource);
-
-/**
  * @brief Read latest controller data from the controller service.
  *
  * Controller data contains current button and axis state.
@@ -635,6 +619,22 @@ typedef struct {
 	 */
 	unsigned int 	(*copyInputData)(void *pSrc, SceCtrlData2 *pDst);
 } SceCtrlInputDataTransferHandler;
+
+/**
+ * Sets up internal controller buffers to receive external input data. Each input mode has its own
+ * set of buffers. These buffers are of type ::SceCtrlData2. 
+ * Note: This function has to be called initially in order to obtain external input data via the corresponding 
+ * Peek/Read functions.
+ * 
+ * @param externalPort Pass a valid element of ::PspCtrlPort (either 1 or 2).
+ * @param transferHandler Pointer to a SceCtrlInputDataTransferHandler containing a function to copy the @p inputSource
+ *						into the PSP's controller buffers.
+ * @param inputSource Pointer to buffer containing the Controller input data to copy to the PSP's 
+ *					  controller buffers. It is passed as the source argument to the given transfer function.
+ * 
+ * @return 0 on success.
+ */
+s32 sceCtrl_driver_E467BEC8(unsigned char externalPort, SceCtrlInputDataTransferHandler *transferHandler, void *inputSource);
 
 /**
  * @brief Read latest controller data from the controller service.

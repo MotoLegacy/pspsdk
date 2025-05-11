@@ -70,7 +70,7 @@ unsigned int copyInputData(void *pSrc, SceCtrlData2 *pDst)
 
 int main(void)
 {
-	SceCtrlData pad;
+	SceCtrlData2 pad;
 
 	pspDebugScreenInit();
 	SetupCallbacks();
