@@ -83,3 +83,6 @@
 #ifdef F_sceCtrl_driver_0025
 	IMPORT_FUNC	"sceCtrl_driver",0x687660FA,sceCtrlGetIdleCancelThreshold
 #endif
+#ifdef F_sceCtrl_driver_0026
+	IMPORT_FUNC	"sceCtrl_driver",0xE467BEC8,sceCtrl_driver_E467BEC8
+#endif

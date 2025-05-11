@@ -30,26 +30,38 @@
 	IMPORT_FUNC	"sceCtrl",0x60B81F86,sceCtrlReadBufferNegative
 #endif
 #ifdef F_sceCtrl_0009
-	IMPORT_FUNC	"sceCtrl",0xB1D0E5CD,sceCtrlPeekLatch
+	IMPORT_FUNC	"sceCtrl",0x5A36B1C2,sceCtrlPeekBufferPositive2
 #endif
 #ifdef F_sceCtrl_0010
-	IMPORT_FUNC	"sceCtrl",0x0B588501,sceCtrlReadLatch
+	IMPORT_FUNC	"sceCtrl",0x239A6BA7,sceCtrlPeekBufferNegative2
 #endif
 #ifdef F_sceCtrl_0011
-	IMPORT_FUNC	"sceCtrl",0x348D99D4,sceCtrl_348D99D4
+	IMPORT_FUNC	"sceCtrl",0x1098030B,sceCtrlReadBufferPositive2
 #endif
 #ifdef F_sceCtrl_0012
-	IMPORT_FUNC	"sceCtrl",0xAF5960F3,sceCtrl_AF5960F3
+	IMPORT_FUNC	"sceCtrl",0x7C3675AB,sceCtrlReadBufferNegative2
 #endif
 #ifdef F_sceCtrl_0013
-	IMPORT_FUNC	"sceCtrl",0xA68FD260,sceCtrlClearRapidFire
+	IMPORT_FUNC	"sceCtrl",0xB1D0E5CD,sceCtrlPeekLatch
 #endif
 #ifdef F_sceCtrl_0014
-	IMPORT_FUNC	"sceCtrl",0x6841BE1A,sceCtrlSetRapidFire
+	IMPORT_FUNC	"sceCtrl",0x0B588501,sceCtrlReadLatch
 #endif
 #ifdef F_sceCtrl_0015
-	IMPORT_FUNC	"sceCtrl",0xA7144800,sceCtrlSetIdleCancelThreshold
+	IMPORT_FUNC	"sceCtrl",0x348D99D4,sceCtrl_348D99D4
 #endif
 #ifdef F_sceCtrl_0016
+	IMPORT_FUNC	"sceCtrl",0xAF5960F3,sceCtrl_AF5960F3
+#endif
+#ifdef F_sceCtrl_0017
+	IMPORT_FUNC	"sceCtrl",0xA68FD260,sceCtrlClearRapidFire
+#endif
+#ifdef F_sceCtrl_0018
+	IMPORT_FUNC	"sceCtrl",0x6841BE1A,sceCtrlSetRapidFire
+#endif
+#ifdef F_sceCtrl_0019
+	IMPORT_FUNC	"sceCtrl",0xA7144800,sceCtrlSetIdleCancelThreshold
+#endif
+#ifdef F_sceCtrl_0020
 	IMPORT_FUNC	"sceCtrl",0x687660FA,sceCtrlGetIdleCancelThreshold
 #endif

@@ -29,6 +29,8 @@ extern "C" {
 /** @addtogroup Ctrl Controller Kernel Library */
 /**@{*/
 
+// MARK: Base
+
 /**
  * @brief Enumeration representing digital controller button flags.
  *
@@ -203,6 +205,19 @@ typedef struct SceCtrlLatch {
 } SceCtrlLatch;
 
 /**
+ * This structure is used to copy external input data into PSP internal controller buffers. 
+ */
+typedef struct {
+    /** Unknown. Is set to 0xC by Sony. */
+    unsigned int 	unk1;
+    /** 
+	 * Pointer to a transfer function to copy input data into a PSP internal controller buffer. 
+	 * The function should return a value >= 0 on success, < 0 otherwise.
+	 */
+	unsigned int 	(*copyInputData)(void *pSrc, SceCtrlData2 *pDst);
+} SceCtrlInputDataTransferHandler;
+
+/**
  * Set the controller cycle setting.
  *
  * @param cycle - Cycle.  Normally set to 0.
@@ -238,6 +253,22 @@ int sceCtrlSetSamplingMode(int mode);
  * @return 0.
  */
 int sceCtrlGetSamplingMode(int *pmode);
+
+/**
+ * Sets up internal controller buffers to receive external input data. Each input mode has its own
+ * set of buffers. These buffers are of type ::SceCtrlData2. 
+ * Note: This function has to be called initially in order to obtain external input data via the corresponding 
+ * Peek/Read functions.
+ * 
+ * @param externalPort Pass a valid element of ::PspCtrlPort (either 1 or 2).
+ * @param transferHandler Pointer to a SceCtrlInputDataTransferHandler containing a function to copy the @p inputSource
+ *						into the PSP's controller buffers.
+ * @param inputSource Pointer to buffer containing the Controller input data to copy to the PSP's 
+ *					  controller buffers. It is passed as the source argument to the given transfer function.
+ * 
+ * @return 0 on success.
+ */
+s32 sceCtrl_driver_E467BEC8(unsigned char externalPort, SceCtrlInputDataTransferHandler *transferHandler, void *inputSource);
 
 /**
  * @brief Read latest controller data from the controller service.
@@ -383,6 +414,271 @@ int sceCtrlSetIdleCancelThreshold(int idlereset, int idleback);
  * @return < 0 on error.
  */
 int sceCtrlGetIdleCancelThreshold(int *idlerest, int *idleback);
+
+// MARK: Extended (DualShock 3) functionality
+
+/** Specifies the type of input data to be obtained. */
+enum PspCtrlPort {
+    /* Input is only obtained from the PSP. */
+    PSP_CTRL_PORT_PSP = 0,
+    /* Input is obtained from the PSP and a connected DualShock 3 controller. */
+    PSP_CTRL_PORT_DS3 = 1,
+    /* Input is obtained from the PSP and an unknown connected external device. */
+    PSP_CTRL_PORT_UNKNOWN_2 = 2
+};
+
+/**
+ * @brief Extended Controller data. Designed to accomodate features from
+ * the SIXAXIS/DualShock 3 controller, as supported in PSP GO.
+ *
+ * @note It is also compatible with reading the standard PSP buttons, though
+ * is interfaced with a bit differently than `SceCtrlData`.
+ *
+ * @see ::sceCtrlPeekBufferPositive2()
+ * @see ::sceCtrlPeekBufferNegative2()
+ * @see ::sceCtrlReadBufferPositive2()
+ * @see ::sceCtrlReadBufferNegative2()
+ * @see ::PspCtrlMode
+ */
+typedef struct SceCtrlData2 {
+	/** Current read frame. */
+	unsigned int 			TimeStamp;
+	/**
+	 * Buttons in pressed state.
+	 *
+	 * Mask the value with one or more ::PspCtrlButtons flags to access specific buttons.
+	 */
+	unsigned int 			Buttons;
+	/** X-axis value of the Analog Stick.*/
+	unsigned char 			Lx;
+	/** Y-axis value of the Analog Stick.*/
+	unsigned char 			Ly;
+	/** X-axis value of the right Analog Stick. */
+	unsigned char 			Rx;
+	/** Y-axis value of the right Analog Stick. */
+	unsigned char 			Ry;
+	/**
+	* @private
+	* Reserved bytes unused by the firmware.
+	*/
+	unsigned char 			Reserved[4];
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+	union {
+		struct {
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+			/** Current pressure applied to the right Directional Pad button. */
+			unsigned char	DPadSensRight;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char	unused1;
+			/** Current pressure applied to the left Directional Pad button. */
+			unsigned char 	DPadSensLeft;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char 	unused2;
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+		};
+
+		/**
+		 * @private
+		 * Left/Right Directional Pad pressure storage before byte indexing.
+		 */
+		unsigned int 	DPadSensRL;
+	};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+	union {
+		struct {
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+			/** Current pressure applied to the up Directional Pad button. */
+			unsigned char	DPadSensUp;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char	unused1;
+			/** Current pressure applied to the down Directional Pad button. */
+			unsigned char 	DPadSensDown;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char 	unused2;
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+		};
+
+		/**
+		 * @private
+		 * Up/Down Directional Pad pressure storage before byte indexing.
+		 */
+		unsigned int 	DPadSensUD;
+	};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+	union {
+		struct {
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+			/** Current pressure applied to the Triangle Face button. */
+			unsigned char	FaceSensTriangle;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char	unused1;
+			/** Current pressure applied to the Circle Face button. */
+			unsigned char 	FaceSensCircle;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char 	unused2;
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+		};
+
+		/**
+		 * @private
+		 * Triangle/Circle Face Button pressure storage before byte indexing.
+		 */
+		unsigned int 	FaceButtonTC;
+	};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+	union {
+		struct {
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+			/** Current pressure applied to the Cross Face button. */
+			unsigned char	FaceSensCross;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char	unused1;
+			/** Current pressure applied to the Square Face button. */
+			unsigned char 	FaceSensSquare;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char 	unused2;
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+		};
+
+		/**
+		 * @private
+		 * Cross/Square Face Button pressure storage before byte indexing.
+		 */
+		unsigned int 	FaceButtonCS;
+	};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+	union {
+		struct {
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+			/** Current pressure applied to the L1 Bumper. */
+			unsigned char	BumperSensL1;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char	unused1;
+			/** Current pressure applied to the R1 Bumper. */
+			unsigned char 	BumperSensR1;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char 	unused2;
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+		};
+
+		/**
+		 * @private
+		 * L1/R1 pressure storage before byte indexing.
+		 */
+		unsigned int 	BumperSensL1R1;
+	};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+	union {
+		struct {
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+			/** Current pressure applied to the L2 Trigger. */
+			unsigned char	TriggerSensL2;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char	unused1;
+			/** Current pressure applied to the L2 Trigger. */
+			unsigned char 	TriggerSensR2;
+			/**
+			 * @private
+			 * Unused, for byte indexing u32.
+			 */
+			unsigned char 	unused2;
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+		};
+
+		/**
+		 * @private
+		 * L1/R1 pressure storage before byte indexing.
+		 */
+		unsigned int 	TriggerSensL2R2;
+	};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+	/** Current SIXAXIS X-Axis Tilt */
+	unsigned int 		SixAxisX;
+	/** Current SIXAXIS Y-Axis Tilt */
+	unsigned int 		SixAxisY;
+} SceCtrlData2;
+
+/**
+ * @brief Read latest controller data from the controller service.
+ *
+ * Controller data contains current button states (including applied pressure),
+ * as well as axis states.
+ *
+ * @note Axis state is present only in ::PSP_CTRL_MODE_ANALOG controller mode.
+ *
+ * @param port - Valid ::PspCtrlPort entry.
+ * @param pad_data - A pointer to ::SceCtrlData2 structure that receives controller data.
+ * @param count - Number of ::SceCtrlData2 structures to read.
+ *
+ * @see ::SceCtrlData2
+ * @see ::sceCtrlPeekBufferNegative2()
+ * @see ::sceCtrlReadBufferPositive2()
+ */
+int sceCtrlPeekBufferPositive2(unsigned int port, SceCtrlData2 *pad_data, int count);
+
+int sceCtrlPeekBufferNegative2(unsigned int port, SceCtrlData2 *pad_data, int count);
+
+/**
+ * @brief Read new controller data from the controller service.
+ *
+ * Controller data contains current button states (including applied pressure),
+ * as well as axis states.
+ *
+ * @note Axis state is present only in ::PSP_CTRL_MODE_ANALOG controller mode.
+ *
+ * @warning Controller data is collected once every controller sampling cycle.
+ * If controller data was already read during a cycle, trying to read it again
+ * will block the execution until the next one.
+ *
+ * @param port - Valid ::PspCtrlPort entry.
+ * @param pad_data - A pointer to ::SceCtrlData2 structure that receives controller data.
+ * @param count - Number of ::SceCtrlData2 structures to read.
+ *
+ * @see ::SceCtrlData2
+ * @see ::sceCtrlReadBufferNegative2()
+ * @see ::sceCtrlPeekBufferPositive2()
+ */
+int sceCtrlReadBufferPositive2(unsigned int port, SceCtrlData2 *pad_data, int count);
+
+int sceCtrlReadBufferNegative2(unsigned int port, SceCtrlData2 *pad_data, int count);
 
 /**@}*/
 
