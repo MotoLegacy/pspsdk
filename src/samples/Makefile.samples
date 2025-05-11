@@ -2,6 +2,7 @@ SAMPLES = \
 	audio/polyphonic \
 	audio/wavegen \
 	controller/basic \
+	controller/extended \
 	debug/exception \
 	debug/kprintf \
 	debug/prxdecrypt \
