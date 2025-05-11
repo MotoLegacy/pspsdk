@@ -205,19 +205,6 @@ typedef struct SceCtrlLatch {
 } SceCtrlLatch;
 
 /**
- * This structure is used to copy external input data into PSP internal controller buffers. 
- */
-typedef struct {
-    /** Unknown. Is set to 0xC by Sony. */
-    unsigned int 	unk1;
-    /** 
-	 * Pointer to a transfer function to copy input data into a PSP internal controller buffer. 
-	 * The function should return a value >= 0 on success, < 0 otherwise.
-	 */
-	unsigned int 	(*copyInputData)(void *pSrc, SceCtrlData2 *pDst);
-} SceCtrlInputDataTransferHandler;
-
-/**
  * Set the controller cycle setting.
  *
  * @param cycle - Cycle.  Normally set to 0.
@@ -635,6 +622,19 @@ typedef struct SceCtrlData2 {
 	/** Current SIXAXIS Y-Axis Tilt */
 	unsigned int 		SixAxisY;
 } SceCtrlData2;
+
+/**
+ * This structure is used to copy external input data into PSP internal controller buffers. 
+ */
+typedef struct {
+    /** Unknown. Is set to 0xC by Sony. */
+    unsigned int 	unk1;
+    /** 
+	 * Pointer to a transfer function to copy input data into a PSP internal controller buffer. 
+	 * The function should return a value >= 0 on success, < 0 otherwise.
+	 */
+	unsigned int 	(*copyInputData)(void *pSrc, SceCtrlData2 *pDst);
+} SceCtrlInputDataTransferHandler;
 
 /**
  * @brief Read latest controller data from the controller service.
