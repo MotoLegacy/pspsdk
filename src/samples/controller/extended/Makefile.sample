@@ -9,6 +9,8 @@ ASFLAGS = $(CFLAGS)
 LIBDIR =
 LDFLAGS = -lpspchnnlsv -lpsputility -lpspdebug -lpspge_driver -lpspwlan -lpspumd -lpsppower -lpspwlan -lpspnet -lpsprtc -lpsphprm -lpspctrl_driver -lpspsdk -lpspkernel
 
+BUILD_PRX = 1
+
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = Extended controller sample
 
