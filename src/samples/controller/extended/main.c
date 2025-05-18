@@ -41,6 +41,8 @@ int CallbackThread(SceSize args, void *argp)
 {
 	int cbid;
 
+	sceCtrlGetButtonMask(0);
+
 	cbid = sceKernelCreateCallback("Exit Callback", exit_callback, NULL);
 	sceKernelRegisterExitCallback(cbid);
 	sceKernelSleepThreadCB();
@@ -78,8 +80,6 @@ int main(void)
 
 	pspDebugScreenInit();
 	SetupCallbacks();
-
-	sceCtrlGetButtonMask(0);
 
 	transferHandler.unk1 = 0xC;
 	transferHandler.copyInputData = copyInputData;
