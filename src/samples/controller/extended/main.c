@@ -84,10 +84,9 @@ int main(void)
 	sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
 
 	while(!done){
-		pspDebugScreenClear();
 		pspDebugScreenSetXY(1, 2);
 
-		sceCtrlReadBufferPositive2(PSP_CTRL_PORT_DS3, &pad, 1);
+		//sceCtrlReadBufferPositive2(PSP_CTRL_PORT_DS3, &pad, 1);
 
 		// 10 May 2025
 		// ---
