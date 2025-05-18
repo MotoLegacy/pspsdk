@@ -64,29 +64,32 @@ int SetupCallbacks(void)
 
 SceCtrlInputDataTransferHandler transferHandler;
 
-unsigned int copyInputData(void *pSrc, SceCtrlData2 *pDst)
+unsigned int copyInputData(SceCtrlData2 *pSrc, SceCtrlData2 *pDst)
 {
+	pDst->Lx = pSrc->Lx;
+	pDst->Ly = pSrc->Ly;
 	return 0;
 }
 
 int main(void)
 {
 	SceCtrlData2 pad;
+	memset(&pad, 0, sizeof(pad));
 
 	pspDebugScreenInit();
 	SetupCallbacks();
 
 	transferHandler.unk1 = 0xC;
 	transferHandler.copyInputData = copyInputData;
-	//sceCtrlSetUpExtendedFeatures(PSP_CTRL_PORT_DS3, &transferHandler, NULL);
+	sceCtrlExtendInternalCtrlBuffers(PSP_CTRL_PORT_DS3, &transferHandler, &pad);
 
 	sceCtrlSetSamplingCycle(0);
 	sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
 
 	while(!done){
-		pspDebugScreenSetXY(1, 2);
+		pspDebugScreenSetXY(0, 2);
 
-		//sceCtrlReadBufferPositive2(PSP_CTRL_PORT_DS3, &pad, 1);
+		sceCtrlReadBufferPositive2(PSP_CTRL_PORT_DS3, &pad, 1);
 
 		// 10 May 2025
 		// ---
