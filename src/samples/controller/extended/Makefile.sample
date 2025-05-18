@@ -6,6 +6,8 @@ CFLAGS = -O2 -Wall
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
+USE_KERNEL_LIBS = 1
+
 LIBDIR =
 LDFLAGS = -lpspctrl_driver
 
