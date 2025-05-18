@@ -79,6 +79,8 @@ int main(void)
 	pspDebugScreenInit();
 	SetupCallbacks();
 
+	sceCtrlGetButtonMask(0);
+
 	transferHandler.unk1 = 0xC;
 	transferHandler.copyInputData = copyInputData;
 	sceCtrlExtendInternalCtrlBuffers(PSP_CTRL_PORT_DS3, &transferHandler, &pad);
