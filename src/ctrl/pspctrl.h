@@ -617,7 +617,7 @@ typedef struct {
 	 * Pointer to a transfer function to copy input data into a PSP internal controller buffer. 
 	 * The function should return a value >= 0 on success, < 0 otherwise.
 	 */
-	unsigned int 	(*copyInputData)(void *pSrc, SceCtrlData2 *pDst);
+	unsigned int 	(*copyInputData)(SceCtrlData2 *pSrc, SceCtrlData2 *pDst);
 } SceCtrlInputDataTransferHandler;
 
 /**
