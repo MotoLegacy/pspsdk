@@ -81,7 +81,7 @@ int main(void)
 
 	transferHandler.unk1 = 0xC;
 	transferHandler.copyInputData = copyInputData;
-	sceCtrlExtendInternalCtrlBuffers(PSP_CTRL_PORT_DS3, &transferHandler, &pad);
+	//sceCtrlExtendInternalCtrlBuffers(PSP_CTRL_PORT_DS3, &transferHandler, &pad);
 
 	sceCtrlSetSamplingCycle(0);
 	sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
