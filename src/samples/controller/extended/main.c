@@ -77,7 +77,7 @@ SceCtrlInputDataTransferHandler transferHandler = {
 	.copyInputData = copyInputData
 };
 
-int (*_sceCtrlExtendInternalCtrlBuffers)(unsigned char, SceCtrlInputDataTransferHandler*, void*) = NULL;
+unsigned int (*_sceCtrlExtendInternalCtrlBuffers)(unsigned char, SceCtrlInputDataTransferHandler*, void*) = NULL;
 u32 set_up_ctrl_pad()
 {
 	int k1 = pspSdkSetK1(0);
