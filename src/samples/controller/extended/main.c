@@ -77,13 +77,16 @@ SceCtrlInputDataTransferHandler transferHandler = {
 	.copyInputData = copyInputData
 };
 
+int (*_sceCtrlExtendInternalCtrlBuffers)(unsigned char, SceCtrlInputDataTransferHandler*, void*) = NULL;
 u32 set_up_ctrl_pad()
 {
 	int k1 = pspSdkSetK1(0);
 	int old_user_level = pspXploitSetUserLevel(8);
 
 	memset(&pad, 0, sizeof(pad));
-	sceCtrlExtendInternalCtrlBuffers(PSP_CTRL_PORT_DS3, &transferHandler, &pad);
+
+	_sceCtrlExtendInternalCtrlBuffers = pspXploitFindFunction("sceCtrl_driver", "sceCtrl_driver", 0xE467BEC8);
+	_sceCtrlExtendInternalCtrlBuffers(PSP_CTRL_PORT_DS3, &transferHandler, &pad);
 
 	pspXploitRepairKernel();
 	pspXploitSetUserLevel(old_user_level);
