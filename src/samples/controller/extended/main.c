@@ -85,7 +85,7 @@ u32 set_up_ctrl_pad()
 
 	memset(&pad, 0, sizeof(pad));
 
-	_sceCtrlExtendInternalCtrlBuffers = pspXploitFindFunction("sceCtrl_driver", "sceCtrl_driver", 0xE467BEC8);
+	_sceCtrlExtendInternalCtrlBuffers = (unsigned int (*)(unsigned char, SceCtrlInputDataTransferHandler*, void*))pspXploitFindFunction("sceCtrl_driver", "sceCtrl_driver", 0xE467BEC8);
 	_sceCtrlExtendInternalCtrlBuffers(PSP_CTRL_PORT_DS3, &transferHandler, &pad);
 
 	pspXploitRepairKernel();
