@@ -23,7 +23,7 @@
 #include <libpspexploit.h>
 
 /* Define the module info section */
-PSP_MODULE_INFO("CONTROLTEST2", 1, 1, 1);
+PSP_MODULE_INFO("CONTROLTEST2", 0, 1, 1);
 
 /* Define the main thread's attribute value (optional) */
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
