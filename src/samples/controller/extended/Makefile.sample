@@ -7,9 +7,8 @@ CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
 LIBDIR =
-LDFLAGS = -lpspchnnlsv -lpsputility -lpspdebug -lpspge_driver -lpspwlan -lpspumd -lpsppower -lpspwlan -lpspnet -lpsprtc -lpsphprm -lpspctrl_driver -lpspsdk -lpspkernel
-
-BUILD_PRX = 1
+LDFLAGS = 
+LIBS = -lpspctrl_driver
 
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = Extended controller sample
