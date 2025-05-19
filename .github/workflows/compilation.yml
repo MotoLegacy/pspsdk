@@ -24,6 +24,10 @@ jobs:
         export PSPDEV=/usr/local/pspdev
         export PATH=$PATH:$PSPDEV/bin
         ./build-and-install.sh
+
+    - name: Install libpspexploit
+      run: |
+        psp-pacman -Sy libpspexploit --noconfirm
     
     - name: Get short SHA
       id: slug

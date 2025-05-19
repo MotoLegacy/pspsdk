@@ -20,9 +20,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <psptypes.h>
+#include <libpspexploit.h>
 
 /* Define the module info section */
-PSP_MODULE_INFO("CONTROLTEST2", 0, 1, 1);
+PSP_MODULE_INFO("CONTROLTEST2", 1, 1, 1);
 
 /* Define the main thread's attribute value (optional) */
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
@@ -62,8 +63,6 @@ int SetupCallbacks(void)
 	return thid;
 }
 
-SceCtrlInputDataTransferHandler transferHandler;
-
 unsigned int copyInputData(SceCtrlData2 *pSrc, SceCtrlData2 *pDst)
 {
 	pDst->Lx = pSrc->Lx;
@@ -71,17 +70,44 @@ unsigned int copyInputData(SceCtrlData2 *pSrc, SceCtrlData2 *pDst)
 	return 0;
 }
 
+SceCtrlData2 pad;
+
+SceCtrlInputDataTransferHandler transferHandler = {
+	.unk1 = 0xC,
+	.copyInputData = copyInputData
+};
+
+void set_up_ctrl_pad(void)
+{
+	int k1 = pspSdkSetK1(0);
+	int old_user_level = pspXploitSetUserLevel(8);
+
+	memset(&pad, 0, sizeof(pad));
+	sceCtrlExtendInternalCtrlBuffers(PSP_CTRL_PORT_DS3, &transferHandler, &pad);
+
+	pspXploitRepairKernel();
+	pspXploitSetUserLevel(old_user_level);
+	pspSdkSetK1(k1);
+}
+
 int main(void)
 {
-	SceCtrlData2 pad;
-	memset(&pad, 0, sizeof(pad));
+	int exploit_rc = 0;
+
+	exploit_rc = pspXploitInitKernelExploit();
+
+	if (exploit_rc != 0)
+		goto bail;
+
+	exploit_rc = pspXploitDoKernelExploit();
+
+	if (exploit_rc != 0)
+		goto bail;
+
+	pspXploitExecuteKernel(set_up_ctrl_pad);
 
 	pspDebugScreenInit();
 	SetupCallbacks();
-
-	transferHandler.unk1 = 0xC;
-	transferHandler.copyInputData = copyInputData;
-	//sceCtrlExtendInternalCtrlBuffers(PSP_CTRL_PORT_DS3, &transferHandler, &pad);
 
 	sceCtrlSetSamplingCycle(0);
 	sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
@@ -149,6 +175,7 @@ int main(void)
 		}
 	}
 
+bail:
 	sceKernelExitGame();
 	return 0;
 }
