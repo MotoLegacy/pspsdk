@@ -77,7 +77,7 @@ SceCtrlInputDataTransferHandler transferHandler = {
 	.copyInputData = copyInputData
 };
 
-void set_up_ctrl_pad(void)
+u32 set_up_ctrl_pad(void)
 {
 	int k1 = pspSdkSetK1(0);
 	int old_user_level = pspXploitSetUserLevel(8);
@@ -104,7 +104,7 @@ int main(void)
 	if (exploit_rc != 0)
 		goto bail;
 
-	pspXploitExecuteKernel(set_up_ctrl_pad);
+	pspXploitExecuteKernel(&set_up_ctrl_pad);
 
 	pspDebugScreenInit();
 	SetupCallbacks();
