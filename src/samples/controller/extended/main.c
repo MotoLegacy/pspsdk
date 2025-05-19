@@ -88,6 +88,8 @@ u32 set_up_ctrl_pad(void)
 	pspXploitRepairKernel();
 	pspXploitSetUserLevel(old_user_level);
 	pspSdkSetK1(k1);
+
+	return 0;
 }
 
 int main(void)
@@ -104,7 +106,7 @@ int main(void)
 	if (exploit_rc != 0)
 		goto bail;
 
-	pspXploitExecuteKernel(&set_up_ctrl_pad);
+	pspXploitExecuteKernel(set_up_ctrl_pad);
 
 	pspDebugScreenInit();
 	SetupCallbacks();
