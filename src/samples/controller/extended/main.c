@@ -77,7 +77,7 @@ SceCtrlInputDataTransferHandler transferHandler = {
 	.copyInputData = copyInputData
 };
 
-u32 set_up_ctrl_pad()
+int set_up_ctrl_pad()
 {
 	int k1 = pspSdkSetK1(0);
 	int old_user_level = pspXploitSetUserLevel(8);
@@ -88,8 +88,6 @@ u32 set_up_ctrl_pad()
 	pspXploitRepairKernel();
 	pspXploitSetUserLevel(old_user_level);
 	pspSdkSetK1(k1);
-
-	return 0;
 }
 
 int main(void)
